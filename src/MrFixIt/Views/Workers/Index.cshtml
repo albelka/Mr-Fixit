@@ -1,8 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿
 
 
 @if (User.Identity.IsAuthenticated)
@@ -18,7 +14,7 @@
         }
         @if (Model.Avaliable)
         {
-            <h2>Please @Html.ActionLink("select a job", "Index", "Jobs").</h2>
+            <h2>@Html.ActionLink("View all Jobs", "Index", "Jobs").</h2>
         }
         else
         {
