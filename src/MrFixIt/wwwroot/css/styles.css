@@ -3,8 +3,8 @@
     color: navy;
 }
 
-body .header-img {
-    background-image: url("~/img/tools.jpg");
+/*body.header-img img {
     background-repeat: repeat;
     background-size: 100%;
-}
+    width: 100%;
+}*/
