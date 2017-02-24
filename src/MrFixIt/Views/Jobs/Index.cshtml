@@ -6,31 +6,15 @@
     <h3>Our Current Jobs</h3>
     @Html.ActionLink("Add a new job", "Create")
 </div>
-@foreach (var Job in Model)
-{
-
-    
-    <ul>
-        <li>@Job.Title</li>
-        <ul>
-            <li>@Job.Description</li>
-        </ul>
-        @if (Job.Worker == null)
-        {
-            <li>This job is unclaimed.<br /><span class="btn claim-job">Claim this job.</span></li>
-        }
-        else
-        {
-            <li class="btn">This Job is claimed by @Job.Worker.FirstName @Job.Worker.LastName</li>
-
-        }
-    </ul>
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.claim-job').click(function () {
+
+            $('.claim-job').submit(function (event) {
+                event.preventDefault(),
                 $.ajax({
                     type: 'GET',
-                    data: { 'id': @Job.JobId},
+                    data: $(this).serialize(),
+                    dataType: 'html',
                     url: '@Url.Action("Claim")',
                     success: function (result) {
                         $('#claimView').html(result);
@@ -39,6 +23,31 @@
             });
         });
     </script>
+@foreach (var Job in Model)
+{
+
+    <ul>
+        <li>@Job.Title</li>
+        <ul>
+            <li>@Job.Description</li>
+        </ul>
+        @if (Job.Worker == null)
+        {
+            <li>This job is unclaimed.<br />
+                <form action="Claim" class="claim-job">
+                    <input type="hidden" name="id" value="@Job.JobId" />
+                    @*<input type="hidden" name="title" value="@Job.Title" />*@
+                    <button type="submit">Claim this job</button>
+                </form>
+            </li>
+        }
+        else
+        {
+            <li class="btn">This Job is claimed by @Job.Worker.FirstName @Job.Worker.LastName</li>
+
+        }
+    </ul>
+   
 
 
     <hr />
