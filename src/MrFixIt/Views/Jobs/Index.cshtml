@@ -27,9 +27,9 @@
 {
 
     <ul>
-        <li>@Job.Title</li>
+        <li>@Job.Title </li>
         <ul>
-            <li>@Job.Description</li>
+            <li>@Job.Description | @Html.ActionLink("Delete", "Delete", new { id = Job.JobId })</li>
         </ul>
         @if (Job.Worker == null)
         {
