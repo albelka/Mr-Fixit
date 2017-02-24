@@ -1,4 +1,7 @@
-﻿
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Mr Fix-It";
+}
 <div class="text-center">
     <h3>Our Current Jobs</h3>
     @Html.ActionLink("Add a new job", "Create")
@@ -6,6 +9,22 @@
 @foreach (var Job in Model)
 {
 
+    
+    <ul>
+        <li>@Job.Title</li>
+        <ul>
+            <li>@Job.Description</li>
+        </ul>
+        @if (Job.Worker == null)
+        {
+            <li>This job is unclaimed.<br /><span class="btn claim-job">Claim this job.</span></li>
+        }
+        else
+        {
+            <li class="btn">This Job is claimed by @Job.Worker.FirstName @Job.Worker.LastName</li>
+
+        }
+    </ul>
     <script type="text/javascript">
         $(document).ready(function () {
             $('.claim-job').click(function () {
@@ -20,21 +39,6 @@
             });
         });
     </script>
-    <ul>
-        <li>@Job.Title</li>
-        <ul>
-            <li>@Job.Description</li>
-        </ul>
-        @if (Job.Worker == null)
-        {
-            <li class="btn claim-job">This job is unclaimed. Claim this job.</li>
-        }
-        else
-        {
-            <li class="btn">This Job is claimed by @Job.Worker.FirstName @Job.Worker.LastName</li>
-
-        }
-    </ul>
 
 
     <hr />
