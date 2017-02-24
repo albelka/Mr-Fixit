@@ -2,3 +2,9 @@
     padding-top: 70px;
     color: navy;
 }
+
+body .header-img {
+    background-image: url("~/img/tools.jpg");
+    background-repeat: repeat;
+    background-size: 100%;
+}

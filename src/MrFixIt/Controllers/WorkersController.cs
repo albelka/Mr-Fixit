@@ -44,19 +44,19 @@ namespace MrFixIt.Controllers
         [HttpPost]
         public IActionResult MarkActive(int id)
         {
-            var thisItem = db.Jobs.FirstOrDefault(items => items.JobId == id);
-            thisItem.Pending = true;
+            Job thisJob = db.Jobs.FirstOrDefault(items => items.JobId == id);
+            thisJob.Pending = true;
             db.SaveChanges();
-            return Content("Active", "text/plain");
+            return Json(thisJob);
         }
 
         [HttpPost]
         public IActionResult MarkComplete(int id)
         {
-            var thisItem = db.Jobs.FirstOrDefault(items => items.JobId == id);
-            thisItem.Completed = true;
+            Job thisJob = db.Jobs.FirstOrDefault(items => items.JobId == id);
+            thisJob.Completed = true;
             db.SaveChanges();
-            return Content("Complete", "text/plain");
+            return Json(thisJob);
         }
 
 

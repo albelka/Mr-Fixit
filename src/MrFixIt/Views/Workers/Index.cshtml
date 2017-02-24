@@ -5,6 +5,41 @@
 
 @if (User.Identity.IsAuthenticated)
 {
+            <script type="text/javascript">
+        $(document).ready(function () {
+            $('.mark-active').submit(function (event) {
+                event.preventDefault(),
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    data: $(this).serialize(),
+                    url: '@Url.Action("MarkActive")',
+                    success: function (result) {
+                        console.log(result);
+                        var resultString = result.title + " has been marked active.";
+                        console.log(resultString);
+                        $('.activeMessage').html(resultString);
+                    }
+                });
+            });
+
+                $('.mark-complete').submit(function (event) {
+                event.preventDefault(),
+                $.ajax({
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    url: '@Url.Action("MarkComplete")',
+                    success: function (result) {
+                        console.log(result);
+                        var resultString = result.title + " has been marked completed.";
+                        console.log(resultString);
+                        $('.completedMessage').html(resultString);
+                    }
+                });
+            });
+        })
+            </script>
 
     <div class="text-center">
         <h4>Hello Worker @Model.FirstName @Model.LastName. You are Logged In.</h4>
@@ -12,65 +47,50 @@
         @foreach (var Job in Model.Jobs)
         {
 
-            <script type="text/javascript">
-        $(document).ready(function () {
-            $('.mark-active').click(function () {
-                $.ajax({
-                    type: 'POST',
-                    data: { 'id': @Job.JobId},
-                    url: '@Url.Action("MarkActive")',
-                    success: function (result) {
-                        $('#activeView').html(result);
-                    }
-                });
-            });
-
-                $('.mark-completed').click(function () {
-                    $.ajax({
-                        type: 'POST',
-                        data: { 'id': @Job.JobId},
-                        url: '@Url.Action("MarkComplete")',
-                        success: function (result) {
-                            $('#completedView').html(result);
-                        }
-                    });
-                });
-        })
-            </script>
 
             <h5>@Job.Title</h5>
-            if(Job.Pending)
+            if(!Job.Pending)
+            
             {
-                <div id="activeView"></div>;
-
-            }
-            else
-            {
-               
-            <p class=" btn mark-active">Mark as Active</p>;
-
-            }
-
-            if (Job.Completed)
-            {
-                <div id="completedView"></div>;
+                <form action="MarkActive" class="mark-active">
+                    <input type="hidden" name="id" value="@Job.JobId" />
+                    <button  class="btn" type="submit">Mark as active</button>
+                </form>
 
             }
             else
             {
 
-                <p class=" btn mark-completed">Mark Complete</p>;
+
+            }
+            <br />
+            if (!Job.Completed)
+            {
+
+                <form action="MarkComplete" class="mark-complete">
+                    <input type="hidden" name="id" value="@Job.JobId" />
+                    <button class="btn" type="submit">Mark as complete</button>
+                </form>
+
+            }
+            else
+            {
+
 
             }
 
         }
+                <h3 class="completedMessage"></h3>
+                <h3 class="activeMessage"></h3>
+
+
         @if (Model.Avaliable)
         {
             <h4>@Html.ActionLink("View all Jobs", "Index", "Jobs")</h4>
         }
         else
         {
-            <p>You are already assigned to a job.</p>
+            <p>No available jobs.</p>
         }
     </div>
 }
