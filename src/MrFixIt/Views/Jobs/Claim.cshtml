@@ -1,14 +1,39 @@
 ﻿@model MrFixIt.Models.Job
 
+
+<script type="text/javascript">
+        $(document).ready(function () {
+
+            $('.confirm-claim').submit(function (event) {
+                event.preventDefault(),
+                $.ajax({
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    url: '@Url.Action("ClaimConfirm")',
+                    success: function (result) {
+                        console.log(result);
+                        $('.myButton').hide();
+                        var resultMessage = 'You have claimed this job!'
+                        $('#confirmClaim').html(resultMessage);
+                    }
+                });
+            });
+        });
+</script>
+
 <h3>Would you like to do this job?</h3>
 <hr />
-@using (Html.BeginForm())
+@using (Html.BeginForm("ClaimConfirm", "Job", FormMethod.Post, new { @class = "confirm-claim" }))
 {
     @Html.HiddenFor(model => model.JobId)
     @Html.HiddenFor(model => model.Title)
     @Html.HiddenFor(model => model.Description)
 
     <h4>@Model.Title</h4>
-    <input type="submit" value="Claim This Job" />
+    <input type="submit" value="Claim This Job" class="myButton" />
 }
+
+<div id="confirmClaim"></div>
+
 <p>@Html.ActionLink("Back to list", "Index")</p>
